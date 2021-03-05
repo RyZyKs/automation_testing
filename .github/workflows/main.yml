@@ -1,0 +1,31 @@
+name: Automation practice testing
+
+on:
+  push:
+    branches: master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Setup Chromedriver
+        uses: nanasess/setup-chromedriver@master
+        with:
+          chromedriver-version: '88.0.4324.96'
+      - name: Checkout SCM
+        uses: actions/checkout@v2
+      - name: Install Node version 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install depencencies from package.json
+        run: npm install -g
+      - name: Install availabe Mocha version
+        run: npm install mocha -g
+      - name: Run test test_Login
+        run: mocha --require ./node_modules/ts-node/register ./tests/test_Login.ts
+      - name: Run test test_SignUp
+        run: mocha --require ./node_modules/ts-node/register ./tests/test_SignUp.ts
+      - name: Run test test_Search
+        run: mocha --require ./node_modules/ts-node/register ./tests/test_SearchByCriteria.ts
